@@ -1,3 +1,285 @@
 @use "./variables.scss" as *;
 
 // put your custom CSS here!
+// ============================================================
+// custom.scss — Quartz typography & alignment fixes
+// Drop this into quartz/styles/custom.scss
+// ============================================================
+
+// ── 1. Font rendering ────────────────────────────────────────
+// Crisp sub-pixel rendering on all major OSes
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+// ── 2. Body & base prose ─────────────────────────────────────
+body {
+  font-size: 1rem;           // trust the browser default (16px)
+  line-height: 1.75;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+// ── 3. Article / page content ────────────────────────────────
+.center {
+  // Quartz wraps main content in .center — constrain line length
+  // for comfortable reading (~65–75 ch)
+  max-width: 720px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding-inline: 1rem;
+  }
+}
+
+// ── 4. Heading scale & spacing ───────────────────────────────
+article,
+.popover-hint {
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+
+    // Kill orphan margin at the very top of a page
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  h4 { font-size: 1.1rem; }
+  h5, h6 { font-size: 1rem; }
+  // ── 6. Lists ─────────────────────────────────────────────
+  ul, ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+
+    li {
+      margin-bottom: 0.35rem;
+      line-height: 1.7;
+
+      // Nested lists — slightly tighter
+      ul, ol {
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+
+  article {
+    p {
+        margin-bottom: 1rem;
+    }
+  }
+
+  // Tighter bullets for task lists (Obsidian checkboxes)
+  .task-list-item {
+    list-style: none;
+    margin-left: -1.25rem;
+    padding-left: 1.75rem;
+    position: relative;
+
+    input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      top: 0.3em;
+    }
+  }
+
+  // ── 7. Blockquotes ───────────────────────────────────────
+  blockquote {
+    margin: 1.5rem 0;
+    padding: 0.75rem 1.25rem;
+    border-left: 3px solid var(--secondary);
+    border-radius: 0 6px 6px 0;
+    background-color: var(--highlight);
+    color: var(--darkgray);
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+  // ── 8. Inline code & code blocks ─────────────────────────
+  code {
+    font-family: var(--codeFont);
+    font-size: 0.875em;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    background: var(--lightgray);
+    color: var(--darkgray);
+    word-break: break-word;
+  }
+
+  pre {
+    margin: 1.25rem 0;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    background: var(--lightgray) !important;
+    line-height: 1.6;
+
+    code {
+      background: transparent;
+      padding: 0;
+      font-size: 0.85rem;
+      word-break: normal;
+    }
+  }
+
+  // ── 9. Horizontal rules ──────────────────────────────────
+  hr {
+    border: none;
+    border-top: 1px solid var(--lightgray);
+    margin: 2rem 0;
+  }
+
+  // ── 10. Tables ───────────────────────────────────────────
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+    display: block;
+    overflow-x: auto;
+
+    thead tr {
+      border-bottom: 2px solid var(--lightgray);
+    }
+
+    th, td {
+      padding: 0.6rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--lightgray);
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 600;
+      color: var(--dark);
+    }
+  }
+
+  // ── 11. Images ───────────────────────────────────────────
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+    margin: 1rem auto;
+  }
+
+  // ── 12. Links ────────────────────────────────────────────
+  a {
+    color: var(--secondary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease;
+
+    &:hover {
+      border-bottom-color: var(--secondary);
+    }
+  }
+}
+
+// ── 13. Callouts (Obsidian-style) ────────────────────────────
+.callout {
+  border-radius: 8px;
+  margin: 1.25rem 0;
+  overflow: hidden;
+
+  .callout-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .callout-content {
+    padding: 0.75rem 1rem;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// ── 14. Sidebar & layout alignment ───────────────────────────
+#quartz-body {
+  // Ensure the three-column layout doesn't bleed on narrow screens
+  column-gap: 2rem;
+
+  @media (max-width: 1200px) {
+    column-gap: 1.25rem;
+  }
+}
+
+// Left sidebar — keep it from collapsing text against the edge
+.left.sidebar {
+  padding-right: 0.5rem;
+}
+
+// Right sidebar
+.right.sidebar {
+  padding-left: 0.5rem;
+}
+
+// ── 15. Table of contents ────────────────────────────────────
+#table-of-contents {
+  ul {
+    padding-left: 1rem;
+
+    li {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 0.2rem;
+
+      a {
+        color: var(--darkgray);
+        border-bottom: none;
+
+        &:hover {
+          color: var(--secondary);
+        }
+      }
+    }
+  }
+}
+
+// ── 16. Search ───────────────────────────────────────────────
+#search-container {
+  input {
+    font-size: 0.95rem;
+  }
+}
+
+// ── 17. Footer ───────────────────────────────────────────────
+footer {
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--lightgray);
+  text-align: center;
+}
+
+// ── 18. Mobile polish ────────────────────────────────────────
+@media (max-width: 600px) {
+  article,
+  .popover-hint {
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.3rem; }
+    h3 { font-size: 1.1rem; }
+  }
+
+  pre {
+    font-size: 0.8rem;
+  }
+}
